@@ -37,6 +37,9 @@ routing for the app:
 
     polymer serve
 
+OR
+
+    dev_appserver.py .
 
 ### Build
 
