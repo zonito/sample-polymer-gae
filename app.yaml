@@ -1,0 +1,75 @@
+application: app-id
+version: 1-0-0
+runtime: python27
+threadsafe: true
+api_version: 1
+
+derived_file_type:
+- python_precompiled
+
+handlers:
+- url: /bower_components
+  static_dir: bower_components
+
+- url: /images
+  static_dir: images
+
+- url: /src
+  static_dir: src
+
+- url: /(.+)\.js
+  static_files: js/\1.js
+  upload: js/(.*\.(js))
+
+- url: /_ah/queue/deferred
+  script: route.APPLICATION
+
+- url: /cron/.*
+  script: route.APPLICATION
+  login: admin
+  secure: always
+
+# Endpoints handler
+- url: /_ah/spi/.*
+  script: route.API
+
+- url: /.*
+  script: route.APPLICATION
+  secure: always
+
+inbound_services:
+- warmup
+
+libraries:
+- name: webapp2
+  version: latest
+- name: endpoints
+  version: latest
+- name: ssl
+  version: latest
+- name: pycrypto
+  version: latest
+
+builtins:
+- deferred: on
+- appstats: on
+- remote_api: on
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^(node_modules/.*)
+- ^(package.json)
+- ^(Gruntfile.js)
+- ^(.*\.sh)
+- ^(.*/)?.*\.md$
+- ^(.*/)?COPYING$
+- ^(.*/)?LICENSE$
+- ^(.*/)?Makefile$
+- ^(.*/)?README$
+- ^(.*/)?AUTHORS$
+- ^(.*/)?PATENTS$
+- ^(.*/)?marked.*$
